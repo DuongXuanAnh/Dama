@@ -1,0 +1,10 @@
+C:\Users\david\source\repos\Dama_v1\Dama_v1\bin\Debug\Dama_v1.exe.config
+C:\Users\david\source\repos\Dama_v1\Dama_v1\bin\Debug\Dama_v1.exe
+C:\Users\david\source\repos\Dama_v1\Dama_v1\bin\Debug\Dama_v1.pdb
+C:\Users\david\source\repos\Dama_v1\Dama_v1\obj\Debug\Dama_v1.csprojAssemblyReference.cache
+C:\Users\david\source\repos\Dama_v1\Dama_v1\obj\Debug\Dama_v1.Form1.resources
+C:\Users\david\source\repos\Dama_v1\Dama_v1\obj\Debug\Dama_v1.Properties.Resources.resources
+C:\Users\david\source\repos\Dama_v1\Dama_v1\obj\Debug\Dama_v1.csproj.GenerateResource.cache
+C:\Users\david\source\repos\Dama_v1\Dama_v1\obj\Debug\Dama_v1.csproj.CoreCompileInputs.cache
+C:\Users\david\source\repos\Dama_v1\Dama_v1\obj\Debug\Dama_v1.exe
+C:\Users\david\source\repos\Dama_v1\Dama_v1\obj\Debug\Dama_v1.pdb
