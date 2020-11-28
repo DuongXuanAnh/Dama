@@ -86,7 +86,7 @@ namespace Dama_v1
                     }
                     else
                     {
-                        _turnHrace = _turnHrace == 1 ? 2 : 1;
+                        //_turnHrace = _turnHrace == 1 ? 2 : 1;
                     }
 
                 }
@@ -98,8 +98,7 @@ namespace Dama_v1
         private void canvas_MouseDown(object sender, MouseEventArgs e)
         {
             Kaminek kamen = chessBoard.selectKaminek(_turnHrace, e.X, e.Y);
-          
-            
+
             if(kamen != null)
             {
                 if (kamen.BelongToHrac != _turnHrace)

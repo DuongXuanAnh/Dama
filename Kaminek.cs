@@ -14,11 +14,13 @@ namespace Dama_v1
         private int _y;
         private string _color;
         private int _belongToHrac;
+        private int _index;
 
         public int X { get => _x; set => _x = value; }
         public int Y { get => _y; set => _y = value; }
 
         public int BelongToHrac { get => _belongToHrac; set => _belongToHrac = value; }
+        public int Index { get => _index; set => _index = value; }
 
         public int Velikost { get => _velikost; set => _velikost = value; }
         public string Color { get => _color; set => _color = value; }

@@ -15,12 +15,14 @@ namespace Dama_v1
         private Color _color;
         private Kaminek _kamen;
         private Point _souradnice;
-      
+        private int _index;
+
         public int X { get => _x; set => _x = value; }
         public int Y { get => _y; set => _y = value; }
         public Kaminek Kamen { get => _kamen; set => _kamen = value; }
         public Color Color { get => _color; set => _color = value; }
         public Point Souradnice { get => _souradnice; set => _souradnice = value; }
+        public int Index { get => _index; set => _index = value; }
 
         public Square(int x, int y)
         {
