@@ -102,86 +102,62 @@ namespace Dama_v1
                 originSquare = squares[k.Index]; // Pole obsahuje puvodni pozici origin_kaminka
             }
 
-            if (hrac == 2) {
-                if (squares[k.Index].Souradnice.Y % 2 == 0)
+            if (squares[k.Index].Souradnice.Y % 2 == 0)
+            {
+                // Pro černé (Hrac 1)
+                if (hrac == 1)
                 {
-                    if (squares[k.Index - 3].Souradnice.Y == squares[k.Index].Souradnice.Y - 1)
+                    dostupnePole(squares[k.Index + 4], squares[k.Index + 7], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
+                    dostupnePole(squares[k.Index + 5], squares[k.Index + 9], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
+                }
+                // Pro bílé (Hrac 2)
+                if (hrac == 2)
+                {
+                    dostupnePole(squares[k.Index - 3], squares[k.Index - 7], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
+                    dostupnePole(squares[k.Index - 4], squares[k.Index - 9], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
+                }
+
+            }
+            else if (squares[k.Index].Souradnice.Y % 2 == 1)
+            {
+                // Pro černé (Hrac 1)
+                if (hrac == 1)
+                {
+                    dostupnePole(squares[k.Index + 3], squares[k.Index + 7], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
+                    dostupnePole(squares[k.Index + 4], squares[k.Index + 9], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
+                }
+                // Pro bílé (Hrac 2)
+                if (hrac == 2)
+                {
+                    dostupnePole(squares[k.Index - 4], squares[k.Index - 7], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
+                    dostupnePole(squares[k.Index - 5], squares[k.Index - 9], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
+                }
+            }    
+        }
+
+       // Ukládá odstupné pole do dostupných polích
+       // Bude volaná i pro černý i bílé, rozhoduje to podle parametrů
+    public void dostupnePole(Square policko1, Square policko2, int souradnice_Y1, int souradnice_Y2, int hrac)
+                // Polícko o 1 řádek výš, polícko o 2 řádek výš, souřadnice o 1 řádek výš, souřadnice o 2 řádek výš
+        {
+            if (policko1.Souradnice.Y == souradnice_Y1)
+            {
+                if (policko1.Kamen == null)
+                {
+                    policko1.Color = Color.Red;
+                    dostupePolicka.Add(policko1);
+                }
+                else
+                {
+                    if (policko1.Kamen.BelongToHrac != hrac
+                     && policko2.Souradnice.Y == souradnice_Y2
+                        )
                     {
-                        if (squares[k.Index - 3].Kamen == null)
-                        {
-                            squares[k.Index - 3].Color = Color.Red;
-                            dostupePolicka.Add(squares[k.Index - 3]);
-                        }
-                        else
-                        {
-                            if (squares[k.Index - 3].Kamen.BelongToHrac == 1
-                             && squares[k.Index - 7].Souradnice.Y == squares[k.Index].Souradnice.Y - 2
-                                )
-                            {
-                                squares[k.Index - 7].Color = Color.Red;
-                                dostupePolicka.Add(squares[k.Index - 7]);
-                            }
-                        }
-                    }
-                    if (squares[k.Index - 4].Souradnice.Y == squares[k.Index].Souradnice.Y - 1)
-                    {
-                        if (squares[k.Index - 4].Kamen == null)
-                        {
-                            squares[k.Index - 4].Color = Color.Red;
-                            dostupePolicka.Add(squares[k.Index - 4]);
-                        }
-                        else
-                        {
-                            if (squares[k.Index - 4].Kamen.BelongToHrac == 1
-                             && squares[k.Index - 9].Souradnice.Y == squares[k.Index].Souradnice.Y - 2
-                                )
-                            {
-                                squares[k.Index - 9].Color = Color.Red;
-                                dostupePolicka.Add(squares[k.Index - 9]);
-                            }
-                        }
+                        policko2.Color = Color.Red;
+                        dostupePolicka.Add(policko2);
                     }
                 }
-                else if(squares[k.Index].Souradnice.Y % 2 == 1)
-                {
-                    if (squares[k.Index - 4].Souradnice.Y == squares[k.Index].Souradnice.Y - 1)
-                    {
-                        if (squares[k.Index - 4].Kamen == null)
-                        {
-                            squares[k.Index - 4].Color = Color.Red;
-                            dostupePolicka.Add(squares[k.Index - 4]);
-                        }
-                        else
-                        {
-                            if (squares[k.Index - 4].Kamen.BelongToHrac == 1 
-                             && squares[k.Index - 7].Souradnice.Y == squares[k.Index].Souradnice.Y-2)
-                            {
-                                squares[k.Index - 7].Color = Color.Red;
-                                dostupePolicka.Add(squares[k.Index - 7]);
-                            }
-                        }
-                    }
-                    if (squares[k.Index - 5].Souradnice.Y == squares[k.Index].Souradnice.Y - 1)
-                    {
-                        if (squares[k.Index - 5].Kamen == null)
-                        {
-                            squares[k.Index - 5].Color = Color.Red;
-                            dostupePolicka.Add(squares[k.Index - 5]);
-                        }
-                        else
-                        {
-                            if (squares[k.Index - 5].Kamen.BelongToHrac == 1
-                             && squares[k.Index - 9].Souradnice.Y == squares[k.Index].Souradnice.Y - 2
-                               )
-                            {
-                                squares[k.Index - 9].Color = Color.Red;
-                                dostupePolicka.Add(squares[k.Index - 9]);
-                            }
-                        }
-                    }
-                }
-                
-            }            
+            }
         }
 
         public bool umistitKamen(Kaminek k)

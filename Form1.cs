@@ -17,7 +17,7 @@ namespace Dama_v1
       
         Size size = new Size(Square.width *8, Square.width*8);
 
-        private int _turnHrace = 2;
+        private int _turnHrace = 1;
         Kaminek selected_kamen;
         int origin_x;
         int origin_y;
@@ -86,7 +86,7 @@ namespace Dama_v1
                     }
                     else
                     {
-                        //_turnHrace = _turnHrace == 1 ? 2 : 1;
+                        _turnHrace = _turnHrace == 1 ? 2 : 1;
                     }
 
                 }
