@@ -105,13 +105,13 @@ namespace Dama_v1
             if (squares[k.Index].Souradnice.Y % 2 == 0)
             {
                 // Pro černé (Hrac 1)
-                if (hrac == 1)
+                if (hrac == 1 && squares.Count > k.Index + 9)
                 {
                     dostupnePole(squares[k.Index + 4], squares[k.Index + 7], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
                     dostupnePole(squares[k.Index + 5], squares[k.Index + 9], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
                 }
                 // Pro bílé (Hrac 2)
-                if (hrac == 2)
+                if (hrac == 2 && k.Index - 9 >= 0)
                 {
                     dostupnePole(squares[k.Index - 3], squares[k.Index - 7], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
                     dostupnePole(squares[k.Index - 4], squares[k.Index - 9], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
@@ -121,13 +121,13 @@ namespace Dama_v1
             else if (squares[k.Index].Souradnice.Y % 2 == 1)
             {
                 // Pro černé (Hrac 1)
-                if (hrac == 1)
+                if (hrac == 1 && squares.Count > k.Index + 9)
                 {
                     dostupnePole(squares[k.Index + 3], squares[k.Index + 7], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
                     dostupnePole(squares[k.Index + 4], squares[k.Index + 9], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
                 }
                 // Pro bílé (Hrac 2)
-                if (hrac == 2)
+                if (hrac == 2  && k.Index - 9 >= 0)
                 {
                     dostupnePole(squares[k.Index - 4], squares[k.Index - 7], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
                     dostupnePole(squares[k.Index - 5], squares[k.Index - 9], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
@@ -147,15 +147,13 @@ namespace Dama_v1
                     policko1.Color = Color.Red;
                     dostupePolicka.Add(policko1);
                 }
-                else
-                {
-                    if (policko1.Kamen.BelongToHrac != hrac
+                else if(
+                     policko1.Kamen.BelongToHrac != hrac
                      && policko2.Souradnice.Y == souradnice_Y2
-                        )
-                    {
+                     && policko2.Kamen == null)
+                {
                         policko2.Color = Color.Red;
                         dostupePolicka.Add(policko2);
-                    }
                 }
             }
         }
