@@ -76,17 +76,18 @@ namespace Dama_v1
 
         public Kaminek selectKaminek(int turnHrace, int x, int y)
         {
+
                 foreach (Kaminek k in (turnHrace == 1) ? hrac1.kaminky : hrac2.kaminky)
                 {
                     if (
-                        (k.X <= x && k.X + k.Velikost >= x) && 
+                        (k.X <= x && k.X + k.Velikost >= x) &&
                         (k.Y <= y && k.Y + k.Velikost >= y)
                        )
                     {
                         return k;
                     }
                 }
-
+          
             return null;
         }
 
@@ -105,39 +106,53 @@ namespace Dama_v1
             if (squares[k.Index].Souradnice.Y % 2 == 0)
             {
                 // Pro černé (Hrac 1)
-                if (hrac == 1 && squares.Count > k.Index + 9)
+                if (hrac == 1 && squares.Count > k.Index + 7)
                 {
-                    dostupnePole(squares[k.Index + 4], squares[k.Index + 7], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
-                    dostupnePole(squares[k.Index + 5], squares[k.Index + 9], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
-                }
+                    oznacitDostupnePole(squares[k.Index + 4], squares[k.Index + 7], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
+                    try
+                    {
+                        oznacitDostupnePole(squares[k.Index + 5], squares[k.Index + 9], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
+                    }
+                    catch { }
+                    }
                 // Pro bílé (Hrac 2)
-                if (hrac == 2 && k.Index - 9 >= 0)
+                if (hrac == 2 && k.Index - 7 >= 0)
                 {
-                    dostupnePole(squares[k.Index - 3], squares[k.Index - 7], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
-                    dostupnePole(squares[k.Index - 4], squares[k.Index - 9], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
+                    oznacitDostupnePole(squares[k.Index - 3], squares[k.Index - 7], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
+                    try{
+                        oznacitDostupnePole(squares[k.Index - 4], squares[k.Index - 9], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
+                    }
+                    catch { }
                 }
 
             }
             else if (squares[k.Index].Souradnice.Y % 2 == 1)
             {
                 // Pro černé (Hrac 1)
-                if (hrac == 1 && squares.Count > k.Index + 9)
+                if (hrac == 1 && squares.Count > k.Index + 7)
                 {
-                    dostupnePole(squares[k.Index + 3], squares[k.Index + 7], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
-                    dostupnePole(squares[k.Index + 4], squares[k.Index + 9], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
+                    oznacitDostupnePole(squares[k.Index + 3], squares[k.Index + 7], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
+                    try { 
+                    oznacitDostupnePole(squares[k.Index + 4], squares[k.Index + 9], squares[k.Index].Souradnice.Y + 1, squares[k.Index].Souradnice.Y + 2, 1);
+                    }
+                    catch { }
                 }
                 // Pro bílé (Hrac 2)
-                if (hrac == 2  && k.Index - 9 >= 0)
+                if (hrac == 2  && k.Index - 7 >= 0)
                 {
-                    dostupnePole(squares[k.Index - 4], squares[k.Index - 7], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
-                    dostupnePole(squares[k.Index - 5], squares[k.Index - 9], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
-                }
+                    oznacitDostupnePole(squares[k.Index - 4], squares[k.Index - 7], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
+                    try
+                    {
+                        oznacitDostupnePole(squares[k.Index - 5], squares[k.Index - 9], squares[k.Index].Souradnice.Y - 1, squares[k.Index].Souradnice.Y - 2, 2);
+                    }
+                    catch { }
+                    }
             }    
         }
 
        // Ukládá odstupné pole do dostupných polích
        // Bude volaná i pro černý i bílé, rozhoduje to podle parametrů
-    public void dostupnePole(Square policko1, Square policko2, int souradnice_Y1, int souradnice_Y2, int hrac)
+    public void oznacitDostupnePole(Square policko1, Square policko2, int souradnice_Y1, int souradnice_Y2, int hrac)
                 // Polícko o 1 řádek výš, polícko o 2 řádek výš, souřadnice o 1 řádek výš, souřadnice o 2 řádek výš
         {
             if (policko1.Souradnice.Y == souradnice_Y1)
@@ -158,7 +173,7 @@ namespace Dama_v1
             }
         }
 
-        public bool umistitKamen(Kaminek k)
+        public int umistitKamen(Kaminek k)
         {
             foreach(Square sq in dostupePolicka)
             {
@@ -170,16 +185,25 @@ namespace Dama_v1
                    if(Math.Abs(sq.Index - originSquare.Index) > 6)
                     {
                         SebratKamen(originSquare.Index, sq.Index);
+                        k.X = sq.X + 5;
+                        k.Y = sq.Y + 5;
+                        k.Index = sq.Index;
+                        sq.Kamen = k;
+                        originSquare.Kamen = null;
+                        return 2;
                     }
-                    k.X = sq.X + 5;
-                    k.Y = sq.Y + 5;
-                    k.Index = sq.Index;
-                    sq.Kamen = k;
-                    originSquare.Kamen = null;
-                    return true;
+                    else
+                    {
+                        k.X = sq.X + 5;
+                        k.Y = sq.Y + 5;
+                        k.Index = sq.Index;
+                        sq.Kamen = k;
+                        originSquare.Kamen = null;
+                        return 1;
+                    }
                 }
             }
-            return false;
+            return 0;
         }
 
         void SebratKamen(int indexOrigin, int destinationIndex)
@@ -240,6 +264,22 @@ namespace Dama_v1
             }
             
 
+        }
+
+        public bool Skoc_Dal(Kaminek k)
+        {
+            clearDostupnePole();
+            ukazatDostupnePole(k, k.BelongToHrac);
+
+            foreach (Square sq in dostupePolicka)
+            {
+                if (Math.Abs(squares[k.Index].Souradnice.Y - sq.Souradnice.Y) == 2)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public void clearDostupnePole()

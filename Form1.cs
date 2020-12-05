@@ -23,6 +23,7 @@ namespace Dama_v1
         int origin_y;
         private bool selected = false;
 
+
         public Form1()
         {
             InitializeComponent();
@@ -79,24 +80,36 @@ namespace Dama_v1
                 selected = false;
                 if (origin_x != 0 && origin_y != 0)
                 {
-                    if (!chessBoard.umistitKamen(selected_kamen))
+                    if (chessBoard.umistitKamen(selected_kamen) == 0)
                     {
                         selected_kamen.X = origin_x;
                         selected_kamen.Y = origin_y;
                     }
-                    else
+                    else if(chessBoard.umistitKamen(selected_kamen) == 1)
                     {
                         _turnHrace = _turnHrace == 1 ? 2 : 1;
                     }
+                    else
+                    {
+                        if(chessBoard.Skoc_Dal(selected_kamen) == true)
+                        {
+                            chessBoard.Skoc_Dal(selected_kamen);
+                        }
+                        else
+                        {
+                            _turnHrace = _turnHrace == 1 ? 2 : 1;
+                        }
+                    }
 
                 }
-                chessBoard.clearDostupnePole(); // Vypnout zobrazení dostupných polých
+                chessBoard.clearDostupnePole(); // Smazat dostupné pole
                 canvas.Refresh();
             }
         }
 
         private void canvas_MouseDown(object sender, MouseEventArgs e)
         {
+
             Kaminek kamen = chessBoard.selectKaminek(_turnHrace, e.X, e.Y);
 
             if(kamen != null)
