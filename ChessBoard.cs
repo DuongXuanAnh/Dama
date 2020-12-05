@@ -167,6 +167,10 @@ namespace Dama_v1
                 && sq.Y < k.Y + k.Velikost / 2
                 && sq.Y + Square.width > k.Y + k.Velikost / 2)
                 {
+                   if(Math.Abs(sq.Index - originSquare.Index) > 6)
+                    {
+                        SebratKamen(originSquare.Index, sq.Index);
+                    }
                     k.X = sq.X + 5;
                     k.Y = sq.Y + 5;
                     k.Index = sq.Index;
@@ -177,6 +181,67 @@ namespace Dama_v1
             }
             return false;
         }
+
+        void SebratKamen(int indexOrigin, int destinationIndex)
+        {
+            //Pro hrac 1
+            if (originSquare.Souradnice.Y % 2 == 1)
+            {
+                if (indexOrigin - destinationIndex == -7)
+                {
+                    hrac2.kaminky.RemoveAll(r => r.Index == indexOrigin + 3);
+                    squares[indexOrigin + 3].Kamen = null;
+                }
+                if (indexOrigin - destinationIndex == -9)
+                {
+                    hrac2.kaminky.RemoveAll(r => r.Index == indexOrigin + 4);
+                    squares[indexOrigin + 4].Kamen = null;
+                }
+            }
+            else
+            {
+                if (indexOrigin - destinationIndex == -7)
+                {
+                    hrac2.kaminky.RemoveAll(r => r.Index == indexOrigin + 4);
+                    squares[indexOrigin + 4].Kamen = null;
+                }
+                if (indexOrigin - destinationIndex == -9)
+                {
+                    hrac2.kaminky.RemoveAll(r => r.Index == indexOrigin + 5);
+                    squares[indexOrigin + 5].Kamen = null;
+                }
+            }
+            //Pro hrac 2
+            if (originSquare.Souradnice.Y % 2 == 1)
+            {
+                if (indexOrigin - destinationIndex == 7)
+                {
+                    hrac1.kaminky.RemoveAll(r => r.Index == indexOrigin - 4);
+                    squares[indexOrigin - 4].Kamen = null;
+                }
+                if (indexOrigin - destinationIndex == 9)
+                {
+                    hrac1.kaminky.RemoveAll(r => r.Index == indexOrigin - 5);
+                    squares[indexOrigin - 5].Kamen = null;
+                }
+            }
+            else
+            {
+                if (indexOrigin - destinationIndex == 7)
+                {
+                    hrac1.kaminky.RemoveAll(r => r.Index == indexOrigin - 3);
+                    squares[indexOrigin - 3].Kamen = null;
+                }
+                if (indexOrigin - destinationIndex == 9)
+                {
+                    hrac1.kaminky.RemoveAll(r => r.Index == indexOrigin - 4);
+                    squares[indexOrigin - 4].Kamen = null;
+                }
+            }
+            
+
+        }
+
         public void clearDostupnePole()
         {
             foreach(Square sq in dostupePolicka)

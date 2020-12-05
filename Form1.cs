@@ -17,7 +17,7 @@ namespace Dama_v1
       
         Size size = new Size(Square.width *8, Square.width*8);
 
-        private int _turnHrace = 1;
+        private int _turnHrace = 2;
         Kaminek selected_kamen;
         int origin_x;
         int origin_y;
