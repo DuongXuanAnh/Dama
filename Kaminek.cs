@@ -15,6 +15,7 @@ namespace Dama_v1
         private string _color;
         private int _belongToHrac;
         private int _index;
+        private bool _disable;
 
         public int X { get => _x; set => _x = value; }
         public int Y { get => _y; set => _y = value; }
@@ -24,12 +25,14 @@ namespace Dama_v1
 
         public int Velikost { get => _velikost; set => _velikost = value; }
         public string Color { get => _color; set => _color = value; }
+        public bool Disable { get => _disable; set => _disable = value; }
         public Kaminek(int velikost, int x, int y, int belongToHrac)
         {
             this._velikost = velikost;
             this._x = x;
             this._y = y;
             this._belongToHrac = belongToHrac;
+            this._disable = false;
         }
 
 

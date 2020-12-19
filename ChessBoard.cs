@@ -136,7 +136,6 @@ namespace Dama_v1
         {
             if (
                 index1 >= 0 && index1 < squares.Count
-                && index2 >= 0 && index2 < squares.Count
                 && squares[index1].Souradnice.Y == squares[indexOrigin].Souradnice.Y + 1)
             {
                 if (squares[index1].Kamen == null)
@@ -146,6 +145,7 @@ namespace Dama_v1
                 else
                 {
                     if (squares[index1].Kamen.BelongToHrac == 2
+                     && index2 >= 0 && index2 < squares.Count
                      && squares[index2].Souradnice.Y == squares[indexOrigin].Souradnice.Y + 2)
                     {
                         oznacitDostupnePole(squares[index2]);
@@ -157,7 +157,6 @@ namespace Dama_v1
         {
              if (
                 index1 >= 0 && index1 < squares.Count
-                && index2 >= 0 && index2 < squares.Count
                 && squares[index1].Souradnice.Y == squares[indexOrigin].Souradnice.Y - 1)
                     {
                         if (squares[index1].Kamen == null)
@@ -167,6 +166,7 @@ namespace Dama_v1
                         else
                         {
                             if (squares[index1].Kamen.BelongToHrac == 1
+                             && index2 >= 0 && index2 < squares.Count
                              && squares[index2].Souradnice.Y == squares[indexOrigin].Souradnice.Y - 2)
                             {
                                 oznacitDostupnePole(squares[index2]);
