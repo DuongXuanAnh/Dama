@@ -187,18 +187,6 @@ namespace Dama_v1
                 }        
         }
 
-    bool IsValidSquare(Square policko, int souradnice_Y, int hrac)
-        {
-            if (policko.Souradnice.Y == souradnice_Y)
-            {
-                if (policko.Kamen == null)
-                {
-                    return true;
-                }
-            }
-                return false;
-        }
-
         public int umistitKamen(Kaminek k)
         {
             foreach(Square sq in dostupePolicka)
@@ -314,6 +302,44 @@ namespace Dama_v1
                 sq.Color = Color.DarkSlateGray;
             }
             dostupePolicka = new List<Square>();
+        }
+
+        public void DisableOtherKamen(Kaminek k)
+        {
+           if(k.BelongToHrac == 1)
+            {
+                foreach(Kaminek kaminky in hrac1.kaminky)
+                {
+                    if (kaminky != k)
+                        kaminky.Disable = true;
+                }
+            }
+            if (k.BelongToHrac == 2)
+            {
+                foreach (Kaminek kaminky in hrac2.kaminky)
+                {
+                    if(kaminky != k)
+                        kaminky.Disable = true;
+                }
+            }
+        }
+
+        public void EnableAllKaminek(Kaminek k)
+        {
+            if (k.BelongToHrac == 1)
+            {
+                foreach (Kaminek kaminky in hrac1.kaminky)
+                {
+                        kaminky.Disable = false;
+                }
+            }
+            if (k.BelongToHrac == 2)
+            {
+                foreach (Kaminek kaminky in hrac2.kaminky)
+                {
+                        kaminky.Disable = false;
+                }
+            }
         }
     }
 }

@@ -93,10 +93,12 @@ namespace Dama_v1
                     {
                         if (chessBoard.Skoc_Dal(selected_kamen) == true)
                         {
+                            chessBoard.DisableOtherKamen(selected_kamen);
                             chessBoard.Skoc_Dal(selected_kamen);
                         }
                         else
                         {
+                            chessBoard.EnableAllKaminek(selected_kamen);
                             _turnHrace = _turnHrace == 1 ? 2 : 1;
                         }
                     }
@@ -112,7 +114,7 @@ namespace Dama_v1
 
             Kaminek kamen = chessBoard.selectKaminek(_turnHrace, e.X, e.Y);
 
-            if(kamen != null)
+            if(kamen != null && kamen.Disable == false)
             {
                 if (kamen.BelongToHrac != _turnHrace)
                 {
@@ -142,7 +144,5 @@ namespace Dama_v1
             }
            
         }
-
-    
     }
 }
