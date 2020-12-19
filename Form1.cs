@@ -91,7 +91,7 @@ namespace Dama_v1
                     }
                     else
                     {
-                        if(chessBoard.Skoc_Dal(selected_kamen) == true)
+                        if (chessBoard.Skoc_Dal(selected_kamen) == true)
                         {
                             chessBoard.Skoc_Dal(selected_kamen);
                         }
