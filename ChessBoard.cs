@@ -138,13 +138,13 @@ namespace Dama_v1
                 index1 >= 0 && index1 < squares.Count
                 && squares[index1].Souradnice.Y == squares[indexOrigin].Souradnice.Y + 1)
             {
-                if (squares[index1].Kamen == null)
+                if (squares[index1].Kamen == null && squares[indexOrigin].Kamen.MultiSkok == false)
                 {
                     oznacitDostupnePole(squares[index1]);
                 }
                 else
                 {
-                    if (squares[index1].Kamen.BelongToHrac == 2
+                    if (squares[index1].Kamen?.BelongToHrac == 2
                      && index2 >= 0 && index2 < squares.Count
                      && squares[index2].Souradnice.Y == squares[indexOrigin].Souradnice.Y + 2)
                     {
@@ -159,13 +159,13 @@ namespace Dama_v1
                 index1 >= 0 && index1 < squares.Count
                 && squares[index1].Souradnice.Y == squares[indexOrigin].Souradnice.Y - 1)
                     {
-                        if (squares[index1].Kamen == null)
+                        if (squares[index1].Kamen == null && squares[indexOrigin].Kamen.MultiSkok == false)
                         {
                             oznacitDostupnePole(squares[index1]);
                         }
                         else
                         {
-                            if (squares[index1].Kamen.BelongToHrac == 1
+                            if (squares[index1].Kamen?.BelongToHrac == 1
                              && index2 >= 0 && index2 < squares.Count
                              && squares[index2].Souradnice.Y == squares[indexOrigin].Souradnice.Y - 2)
                             {
@@ -276,12 +276,12 @@ namespace Dama_v1
                     squares[indexOrigin - 4].Kamen = null;
                 }
             }
-            
-
         }
 
+        // Zkontroluje jestli nemuze skocit dal
         public bool Skoc_Dal(Kaminek k)
         {
+
             clearDostupnePole();
             ukazatDostupnePole(k, k.BelongToHrac);
 

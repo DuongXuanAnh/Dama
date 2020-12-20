@@ -95,10 +95,12 @@ namespace Dama_v1
                         {
                             chessBoard.DisableOtherKamen(selected_kamen);
                             chessBoard.Skoc_Dal(selected_kamen);
+                            selected_kamen.MultiSkok = true;
                         }
                         else
                         {
                             chessBoard.EnableAllKaminek(selected_kamen);
+                            selected_kamen.MultiSkok = false;
                             _turnHrace = _turnHrace == 1 ? 2 : 1;
                         }
                     }
