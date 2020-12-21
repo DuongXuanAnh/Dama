@@ -204,6 +204,7 @@ namespace Dama_v1
                         k.Index = sq.Index;
                         sq.Kamen = k;
                         originSquare.Kamen = null;
+                        ChangeToDamaIfPossible(sq, k);
                         return 2;
                     }
                     else
@@ -213,6 +214,7 @@ namespace Dama_v1
                         k.Index = sq.Index;
                         sq.Kamen = k;
                         originSquare.Kamen = null;
+                        ChangeToDamaIfPossible(sq, k);
                         return 1;
                     }
                 }
@@ -339,6 +341,14 @@ namespace Dama_v1
                 {
                         kaminky.Disable = false;
                 }
+            }
+        }
+
+        private void ChangeToDamaIfPossible(Square sq, Kaminek k)
+        {
+            if (sq.Souradnice.Y == 0 || sq.Souradnice.Y == 7)
+            {
+                k.IsDama = true;
             }
         }
     }

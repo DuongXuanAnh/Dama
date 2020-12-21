@@ -38,7 +38,7 @@ namespace Dama_v1
             g.SmoothingMode = SmoothingMode.AntiAlias;
             chessBoard.vykreslitChessBoard(g);
             chessBoard.vykreslitKaminky(g);
-           
+
         }
 
         #region Zmnenit barvu kaminku
@@ -80,16 +80,16 @@ namespace Dama_v1
                 selected = false;
                 if (origin_x != 0 && origin_y != 0)
                 {
-                    if (chessBoard.umistitKamen(selected_kamen) == 0)
+                    if (chessBoard.umistitKamen(selected_kamen) == 0) // Nedostupne policko
                     {
                         selected_kamen.X = origin_x;
                         selected_kamen.Y = origin_y;
                     }
-                    else if(chessBoard.umistitKamen(selected_kamen) == 1)
+                    else if(chessBoard.umistitKamen(selected_kamen) == 1) // Umisteni success
                     {
                         _turnHrace = _turnHrace == 1 ? 2 : 1;
                     }
-                    else
+                    else // Skontrolovat multi skok
                     {
                         if (chessBoard.Skoc_Dal(selected_kamen) == true)
                         {
