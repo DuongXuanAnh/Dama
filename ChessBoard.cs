@@ -14,23 +14,31 @@ namespace Dama_v1
         public Hrac hrac2 = new Hrac();
         List<Square> dostupePolicka = new List<Square>();
 
+        //------------------------------------------------------
+        //Pro Damu
+        List<Square> all_diagonals = new List<Square>(); // Vsechny policka ve 2 diagonale
+        List<Square> diagonal_topLeft = new List<Square>();
+        List<Square> diagonal_topRight = new List<Square>();
+        List<Square> diagonal_botRight = new List<Square>();
+        List<Square> diagonal_botLeft = new List<Square>();
+
         public void createChessBoard()
         {
             int index = 0; // Hodnota indexu cerneho pole
-            for(int i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
-                for(int j = 0; j < 8; j++)
+                for (int j = 0; j < 8; j++)
                 {
                     if ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0))
                     {
                         Square square = new Square(j * Square.width, i * Square.width);
                         square.Color = Color.DarkSlateGray;
-                        square.Souradnice = new Point(j, i);                     
+                        square.Souradnice = new Point(j, i);
                         square.Index = index;
                         index++;
                         squares.Add(square);
 
-                    }                    
+                    }
                 }
             }
         }
@@ -45,7 +53,7 @@ namespace Dama_v1
 
         public void createKaminky()
         {
-            for(int i = 0; i < 12; i++)
+            for (int i = 0; i < 12; i++)
             {
                 Kaminek k1 = new Kaminek(Square.width - 10, squares[i].X + 5, squares[i].Y + 5, 1);
                 k1.Color = "#000000";
@@ -59,7 +67,9 @@ namespace Dama_v1
                 squares[32 - i - 1].Kamen = k2;
                 hrac2.kaminky.Add(k2);
             }
-            hrac2.kaminky[9].IsDama = true;
+            //hrac2.kaminky[9].IsDama = true;
+            //hrac2.kaminky[8].IsDama = true;
+            //hrac2.kaminky[10].IsDama = true;
         }
 
         public void vykreslitKaminky(Graphics g)
@@ -76,16 +86,16 @@ namespace Dama_v1
 
         public Kaminek selectKaminek(int turnHrace, int x, int y)
         {
-                foreach (Kaminek k in (turnHrace == 1) ? hrac1.kaminky : hrac2.kaminky)
+            foreach (Kaminek k in (turnHrace == 1) ? hrac1.kaminky : hrac2.kaminky)
+            {
+                if (
+                    (k.X <= x && k.X + k.Velikost >= x) &&
+                    (k.Y <= y && k.Y + k.Velikost >= y)
+                   )
                 {
-                    if (
-                        (k.X <= x && k.X + k.Velikost >= x) &&
-                        (k.Y <= y && k.Y + k.Velikost >= y)
-                       )
-                    {
-                        return k;
-                    }
+                    return k;
                 }
+            }
             return null;
         }
 
@@ -100,8 +110,8 @@ namespace Dama_v1
                 originSquare = squares[k.Index]; // Pole obsahuje puvodni pozici origin_kaminka
             }
 
-                if (hrac == 2)
-                {
+            if (hrac == 2)
+            {
                 if (k.IsDama)
                 {
                     DamaHandle(k);
@@ -110,33 +120,33 @@ namespace Dama_v1
                 {
                     if (squares[k.Index].Souradnice.Y % 2 == 0)
                     {
-                        temp2(k.Index, k.Index - 3, k.Index - 7);
-                        temp2(k.Index, k.Index - 4, k.Index - 9);
+                        dostupnePole2(k.Index, k.Index - 3, k.Index - 7);
+                        dostupnePole2(k.Index, k.Index - 4, k.Index - 9);
                     }
                     else if (squares[k.Index].Souradnice.Y % 2 == 1)
                     {
-                        temp2(k.Index, k.Index - 4, k.Index - 7);
-                        temp2(k.Index, k.Index - 5, k.Index - 9);
+                        dostupnePole2(k.Index, k.Index - 4, k.Index - 7);
+                        dostupnePole2(k.Index, k.Index - 5, k.Index - 9);
                     }
                 }
-                }
-                else if (hrac == 1)
+            }
+            else if (hrac == 1)
+            {
+                if (squares[k.Index].Souradnice.Y % 2 == 0)
                 {
-                    if (squares[k.Index].Souradnice.Y % 2 == 0)
-                    {
-                        temp1(k.Index, k.Index + 4, k.Index + 7);
-                        temp1(k.Index, k.Index + 5, k.Index + 9);
-                    }
-                    else if (squares[k.Index].Souradnice.Y % 2 == 1)
-                    {
-                        temp1(k.Index, k.Index + 3, k.Index + 7);
-                        temp1(k.Index, k.Index + 4, k.Index + 9);
-                    }
+                    dostupnePole1(k.Index, k.Index + 4, k.Index + 7);
+                    dostupnePole1(k.Index, k.Index + 5, k.Index + 9);
                 }
-            }          
-        
+                else if (squares[k.Index].Souradnice.Y % 2 == 1)
+                {
+                    dostupnePole1(k.Index, k.Index + 3, k.Index + 7);
+                    dostupnePole1(k.Index, k.Index + 4, k.Index + 9);
+                }
+            }
+        }
 
-        void temp1(int indexOrigin, int index1, int index2)
+
+        void dostupnePole1(int indexOrigin, int index1, int index2)
         {
             if (
                 index1 >= 0 && index1 < squares.Count
@@ -157,50 +167,60 @@ namespace Dama_v1
                 }
             }
         }
-        void temp2(int indexOrigin, int index1, int index2)
+        void dostupnePole2(int indexOrigin, int index1, int index2)
         {
-             if (
-                index1 >= 0 && index1 < squares.Count
-                && squares[index1].Souradnice.Y == squares[indexOrigin].Souradnice.Y - 1)
+            if (
+               index1 >= 0 && index1 < squares.Count
+               && squares[index1].Souradnice.Y == squares[indexOrigin].Souradnice.Y - 1)
+            {
+                if (squares[index1].Kamen == null && squares[indexOrigin].Kamen.MultiSkok == false)
+                {
+                    oznacitDostupnePole(squares[index1]);
+                }
+                else
+                {
+                    if (squares[index1].Kamen?.BelongToHrac == 1
+                     && index2 >= 0 && index2 < squares.Count
+                     && squares[index2].Souradnice.Y == squares[indexOrigin].Souradnice.Y - 2)
                     {
-                        if (squares[index1].Kamen == null && squares[indexOrigin].Kamen.MultiSkok == false)
-                        {
-                            oznacitDostupnePole(squares[index1]);
-                        }
-                        else
-                        {
-                            if (squares[index1].Kamen?.BelongToHrac == 1
-                             && index2 >= 0 && index2 < squares.Count
-                             && squares[index2].Souradnice.Y == squares[indexOrigin].Souradnice.Y - 2)
-                            {
-                                oznacitDostupnePole(squares[index2]);
-                            }
-                        }
+                        oznacitDostupnePole(squares[index2]);
                     }
+                }
+            }
         }
 
-       // Ukládá odstupné pole do dostupných polích
-       // Bude volaná i pro černý i bílé, rozhoduje to podle parametrů
-    public void oznacitDostupnePole(Square policko)
-                // Polícko o 1 řádek výš, polícko o 2 řádek výš, souřadnice o 1 řádek výš, souřadnice o 2 řádek výš
+        // Ukládá odstupné pole do dostupných polích
+        // Bude volaná i pro černý i bílé, rozhoduje to podle parametrů
+        public void oznacitDostupnePole(Square policko)
+        // Polícko o 1 řádek výš, polícko o 2 řádek výš, souřadnice o 1 řádek výš, souřadnice o 2 řádek výš
         {
-                if (policko.Kamen == null)
-                {
-                    policko.Color = Color.Red;
-                    dostupePolicka.Add(policko);
-                }        
+            if (policko.Kamen == null)
+            {
+                policko.Color = Color.Red;
+                dostupePolicka.Add(policko);
+            }
         }
 
         public int umistitKamen(Kaminek k)
         {
-            foreach(Square sq in dostupePolicka)
+            foreach (Square sq in dostupePolicka)
             {
-                if(sq.X < k.X + k.Velikost/2
+                if (sq.X < k.X + k.Velikost / 2
                 && sq.X + Square.width > k.X + k.Velikost / 2
                 && sq.Y < k.Y + k.Velikost / 2
                 && sq.Y + Square.width > k.Y + k.Velikost / 2)
                 {
-                   if(Math.Abs(sq.Index - originSquare.Index) > 5)
+                    if (k.IsDama)
+                    {
+                        Dama_SebratKamen(originSquare.Index, sq.Index, k);
+                        k.X = sq.X + 5;
+                        k.Y = sq.Y + 5;
+                        k.Index = sq.Index;
+                        sq.Kamen = k;
+                        originSquare.Kamen = null;
+                        return 3;
+                    }
+                    else if (Math.Abs(sq.Index - originSquare.Index) > 5)
                     {
                         SebratKamen(originSquare.Index, sq.Index);
                         k.X = sq.X + 5;
@@ -226,62 +246,131 @@ namespace Dama_v1
             return 0;
         }
 
+        void Dama_SebratKamen(int indexOrigin, int destinationIndex, Kaminek k)
+        {
+            // Myslenka je sebrat kameny tak, ze zkontroluji 4 diagonaly
+            if (squares[indexOrigin].Souradnice.Y > squares[destinationIndex].Souradnice.Y)
+            {
+                if(squares[indexOrigin].Souradnice.X < squares[destinationIndex].Souradnice.X)
+                {
+                    for(int i = diagonal_topRight.Count - 1; i > 1 ; i--) // Sebrat po TOP_RIGHT diagonale
+                    {
+                        if(diagonal_topRight[i].Index > destinationIndex)
+                        {
+                            if (k.BelongToHrac == 1)
+                                hrac2.kaminky.RemoveAll(r => r.Index == diagonal_topRight[i].Index);                          
+                            else if (k.BelongToHrac == 2)
+                                hrac1.kaminky.RemoveAll(r => r.Index == diagonal_topRight[i].Index);
+
+                            squares[diagonal_topRight[i].Index].Kamen = null;
+                        }                    
+                    }                  
+                }
+                if (squares[indexOrigin].Souradnice.X > squares[destinationIndex].Souradnice.X)
+                {
+                    for (int i = diagonal_topLeft.Count - 1; i > 1; i--) // Sebrat po TOP_LEFT diagonale
+                    {
+                        if (diagonal_topLeft[i].Index > destinationIndex)
+                        {
+                            if (k.BelongToHrac == 1)
+                                hrac2.kaminky.RemoveAll(r => r.Index == diagonal_topLeft[i].Index);
+                            else if (k.BelongToHrac == 2)
+                                hrac1.kaminky.RemoveAll(r => r.Index == diagonal_topLeft[i].Index);
+
+                            squares[diagonal_topLeft[i].Index].Kamen = null;
+                        }
+                    }
+                }
+            }
+            else if (squares[indexOrigin].Souradnice.Y < squares[destinationIndex].Souradnice.Y)
+            {
+                if (squares[indexOrigin].Souradnice.X < squares[destinationIndex].Souradnice.X)
+                {
+                    for (int i = 0; i < diagonal_botRight.Count; i++) // Sebrat po BOT_RIGHT diagonale
+                    {
+                        if (diagonal_botRight[i].Index < destinationIndex)
+                        {
+                            if (k.BelongToHrac == 1)
+                                hrac2.kaminky.RemoveAll(r => r.Index == diagonal_botRight[i].Index);
+                            else if (k.BelongToHrac == 2)
+                                hrac1.kaminky.RemoveAll(r => r.Index == diagonal_botRight[i].Index);
+
+                            squares[diagonal_botRight[i].Index].Kamen = null;
+                        }
+                    }
+                }else if (squares[indexOrigin].Souradnice.X > squares[destinationIndex].Souradnice.X)
+                {
+                    for (int i = 0; i < diagonal_botLeft.Count; i++) // Sebrat po BOT_LEFT diagonale
+                    {
+                        if (diagonal_botLeft[i].Index < destinationIndex)
+                        {
+                            if (k.BelongToHrac == 1)
+                                hrac2.kaminky.RemoveAll(r => r.Index == diagonal_botLeft[i].Index);
+                            else if (k.BelongToHrac == 2)
+                                hrac1.kaminky.RemoveAll(r => r.Index == diagonal_botLeft[i].Index);
+
+                            squares[diagonal_botLeft[i].Index].Kamen = null;
+                        }
+                    }
+                }
+            }
+        }
         void SebratKamen(int indexOrigin, int destinationIndex)
         {
-            //Pro hrac 1
-            if (originSquare.Souradnice.Y % 2 == 1)
-            {
-                if (indexOrigin - destinationIndex == -7)
+                //Pro hrac 1
+                if (originSquare.Souradnice.Y % 2 == 1)
                 {
-                    hrac2.kaminky.RemoveAll(r => r.Index == indexOrigin + 3);
-                    squares[indexOrigin + 3].Kamen = null;
+                    if (indexOrigin - destinationIndex == -7)
+                    {
+                        hrac2.kaminky.RemoveAll(r => r.Index == indexOrigin + 3);
+                        squares[indexOrigin + 3].Kamen = null;
+                    }
+                    if (indexOrigin - destinationIndex == -9)
+                    {
+                        hrac2.kaminky.RemoveAll(r => r.Index == indexOrigin + 4);
+                        squares[indexOrigin + 4].Kamen = null;
+                    }
                 }
-                if (indexOrigin - destinationIndex == -9)
+                else
                 {
-                    hrac2.kaminky.RemoveAll(r => r.Index == indexOrigin + 4);
-                    squares[indexOrigin + 4].Kamen = null;
+                    if (indexOrigin - destinationIndex == -7)
+                    {
+                        hrac2.kaminky.RemoveAll(r => r.Index == indexOrigin + 4);
+                        squares[indexOrigin + 4].Kamen = null;
+                    }
+                    if (indexOrigin - destinationIndex == -9)
+                    {
+                        hrac2.kaminky.RemoveAll(r => r.Index == indexOrigin + 5);
+                        squares[indexOrigin + 5].Kamen = null;
+                    }
                 }
-            }
-            else
-            {
-                if (indexOrigin - destinationIndex == -7)
+                //Pro hrac 2
+                if (originSquare.Souradnice.Y % 2 == 1)
                 {
-                    hrac2.kaminky.RemoveAll(r => r.Index == indexOrigin + 4);
-                    squares[indexOrigin + 4].Kamen = null;
+                    if (indexOrigin - destinationIndex == 7)
+                    {
+                        hrac1.kaminky.RemoveAll(r => r.Index == indexOrigin - 4);
+                        squares[indexOrigin - 4].Kamen = null;
+                    }
+                    if (indexOrigin - destinationIndex == 9)
+                    {
+                        hrac1.kaminky.RemoveAll(r => r.Index == indexOrigin - 5);
+                        squares[indexOrigin - 5].Kamen = null;
+                    }
                 }
-                if (indexOrigin - destinationIndex == -9)
+                else
                 {
-                    hrac2.kaminky.RemoveAll(r => r.Index == indexOrigin + 5);
-                    squares[indexOrigin + 5].Kamen = null;
-                }
-            }
-            //Pro hrac 2
-            if (originSquare.Souradnice.Y % 2 == 1)
-            {
-                if (indexOrigin - destinationIndex == 7)
-                {
-                    hrac1.kaminky.RemoveAll(r => r.Index == indexOrigin - 4);
-                    squares[indexOrigin - 4].Kamen = null;
-                }
-                if (indexOrigin - destinationIndex == 9)
-                {
-                    hrac1.kaminky.RemoveAll(r => r.Index == indexOrigin - 5);
-                    squares[indexOrigin - 5].Kamen = null;
-                }
-            }
-            else
-            {
-                if (indexOrigin - destinationIndex == 7)
-                {
-                    hrac1.kaminky.RemoveAll(r => r.Index == indexOrigin - 3);
-                    squares[indexOrigin - 3].Kamen = null;
-                }
-                if (indexOrigin - destinationIndex == 9)
-                {
-                    hrac1.kaminky.RemoveAll(r => r.Index == indexOrigin - 4);
-                    squares[indexOrigin - 4].Kamen = null;
-                }
-            }
+                    if (indexOrigin - destinationIndex == 7)
+                    {
+                        hrac1.kaminky.RemoveAll(r => r.Index == indexOrigin - 3);
+                        squares[indexOrigin - 3].Kamen = null;
+                    }
+                    if (indexOrigin - destinationIndex == 9)
+                    {
+                        hrac1.kaminky.RemoveAll(r => r.Index == indexOrigin - 4);
+                        squares[indexOrigin - 4].Kamen = null;
+                    }
+            }       
         }
 
         // Zkontroluje jestli nemuze skocit dal
@@ -358,42 +447,42 @@ namespace Dama_v1
 
         void DamaHandle(Kaminek k) // Funkce urcuje jak se ma chovat dama
         {
-            List<Square> temp = new List<Square>(); // Vsechny policka ve 2 diagonale
+            all_diagonals = new List<Square>();
+            diagonal_botLeft = new List<Square>();
+            diagonal_botRight = new List<Square>();
+            diagonal_topLeft = new List<Square>();
+            diagonal_topRight = new List<Square>();
+
             for (int i = 0; i < squares.Count; i++)
             {
                 if (Math.Abs(squares[i].Souradnice.X - squares[k.Index].Souradnice.X) == Math.Abs(squares[i].Souradnice.Y - squares[k.Index].Souradnice.Y))
                 {
-                    temp.Add(squares[i]);
+                    all_diagonals.Add(squares[i]);
                 }
             }
 
-            List<Square> diagonal_topLeft = new List<Square>();
-            List<Square> diagonal_topRight = new List<Square>();
-            List<Square> diagonal_botRight = new List<Square>();
-            List<Square> diagonal_botLeft = new List<Square>();
-
-            for (int i = 0; i < temp.Count; i++)
+            for (int i = 0; i < all_diagonals.Count; i++)
             {
-                if (temp[i].Index < k.Index)
+                if (all_diagonals[i].Index < k.Index)
                 {
-                    if (temp[i].Souradnice.X < squares[k.Index].Souradnice.X)
+                    if (all_diagonals[i].Souradnice.X < squares[k.Index].Souradnice.X)
                     {
-                        diagonal_topLeft.Add(temp[i]);
+                        diagonal_topLeft.Add(all_diagonals[i]);
                     }
                     else
                     {
-                        diagonal_topRight.Add(temp[i]);
+                        diagonal_topRight.Add(all_diagonals[i]);
                     }
                 }
-                if (temp[i].Index > k.Index)
+                if (all_diagonals[i].Index > k.Index)
                 {
-                    if (temp[i].Souradnice.X < squares[k.Index].Souradnice.X)
+                    if (all_diagonals[i].Souradnice.X < squares[k.Index].Souradnice.X)
                     {
-                        diagonal_botLeft.Add(temp[i]);
+                        diagonal_botLeft.Add(all_diagonals[i]);
                     }
                     else
                     {
-                        diagonal_botRight.Add(temp[i]);
+                        diagonal_botRight.Add(all_diagonals[i]);
                     }
                 }
             }

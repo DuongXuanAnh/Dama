@@ -89,7 +89,7 @@ namespace Dama_v1
                     {
                         _turnHrace = _turnHrace == 1 ? 2 : 1;
                     }
-                    else // Skontrolovat multi skok
+                    else if (chessBoard.umistitKamen(selected_kamen) == 2) // Zkontrolovat multiskok pro normalni kaminek
                     {
                         if (chessBoard.Skoc_Dal(selected_kamen) == true)
                         {
@@ -104,6 +104,10 @@ namespace Dama_v1
                             _turnHrace = _turnHrace == 1 ? 2 : 1;
                         }
                     }
+                    else if (chessBoard.umistitKamen(selected_kamen) == 3) // Zkontrolovat skok Damy
+                    {
+                        _turnHrace = _turnHrace == 1 ? 2 : 1;
+                    }
 
                 }
                 chessBoard.clearDostupnePole(); // Smazat dostupné pole
@@ -113,9 +117,8 @@ namespace Dama_v1
 
         private void canvas_MouseDown(object sender, MouseEventArgs e)
         {
-
+            
             Kaminek kamen = chessBoard.selectKaminek(_turnHrace, e.X, e.Y);
-
 
             if (kamen != null && kamen.Disable == false)
             {
