@@ -116,7 +116,8 @@ namespace Dama_v1
 
             Kaminek kamen = chessBoard.selectKaminek(_turnHrace, e.X, e.Y);
 
-            if(kamen != null && kamen.Disable == false)
+
+            if (kamen != null && kamen.Disable == false)
             {
                 if (kamen.BelongToHrac != _turnHrace)
                 {
@@ -133,6 +134,7 @@ namespace Dama_v1
             {
                 selected_kamen = null; // Kdyz si vybiram spatne kaminky
             }
+            
             
         }
 
