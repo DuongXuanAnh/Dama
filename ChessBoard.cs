@@ -67,7 +67,7 @@ namespace Dama_v1
                 squares[32 - i - 1].Kamen = k2;
                 hrac2.kaminky.Add(k2);
             }
-            //hrac2.kaminky[9].IsDama = true;
+            hrac2.kaminky[9].IsDama = true;
             //hrac2.kaminky[8].IsDama = true;
             //hrac2.kaminky[10].IsDama = true;
         }
@@ -132,15 +132,22 @@ namespace Dama_v1
             }
             else if (hrac == 1)
             {
-                if (squares[k.Index].Souradnice.Y % 2 == 0)
+                if (k.IsDama)
                 {
-                    dostupnePole1(k.Index, k.Index + 4, k.Index + 7);
-                    dostupnePole1(k.Index, k.Index + 5, k.Index + 9);
+                    DamaHandle(k);
                 }
-                else if (squares[k.Index].Souradnice.Y % 2 == 1)
+                else
                 {
-                    dostupnePole1(k.Index, k.Index + 3, k.Index + 7);
-                    dostupnePole1(k.Index, k.Index + 4, k.Index + 9);
+                    if (squares[k.Index].Souradnice.Y % 2 == 0)
+                    {
+                        dostupnePole1(k.Index, k.Index + 4, k.Index + 7);
+                        dostupnePole1(k.Index, k.Index + 5, k.Index + 9);
+                    }
+                    else if (squares[k.Index].Souradnice.Y % 2 == 1)
+                    {
+                        dostupnePole1(k.Index, k.Index + 3, k.Index + 7);
+                        dostupnePole1(k.Index, k.Index + 4, k.Index + 9);
+                    }
                 }
             }
         }
@@ -253,7 +260,7 @@ namespace Dama_v1
             {
                 if(squares[indexOrigin].Souradnice.X < squares[destinationIndex].Souradnice.X)
                 {
-                    for(int i = diagonal_topRight.Count - 1; i > 1 ; i--) // Sebrat po TOP_RIGHT diagonale
+                    for(int i = diagonal_topRight.Count - 1; i > 0 ; i--) // Sebrat po TOP_RIGHT diagonale
                     {
                         if(diagonal_topRight[i].Index > destinationIndex)
                         {
@@ -268,7 +275,7 @@ namespace Dama_v1
                 }
                 if (squares[indexOrigin].Souradnice.X > squares[destinationIndex].Souradnice.X)
                 {
-                    for (int i = diagonal_topLeft.Count - 1; i > 1; i--) // Sebrat po TOP_LEFT diagonale
+                    for (int i = diagonal_topLeft.Count - 1; i > 0; i--) // Sebrat po TOP_LEFT diagonale
                     {
                         if (diagonal_topLeft[i].Index > destinationIndex)
                         {
@@ -535,6 +542,16 @@ namespace Dama_v1
                     oznacitDostupnePole(diagonal_botRight[i]);
                 }
             }
+        }
+
+        public bool IsGameOver()
+        {
+            if(hrac1.kaminky.Count == 0 || hrac2.kaminky.Count == 0)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

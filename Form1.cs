@@ -30,6 +30,7 @@ namespace Dama_v1
             canvas.Size = size;
             chessBoard.createChessBoard();
             chessBoard.createKaminky();
+
         }
 
         private void canvas_Paint(object sender, PaintEventArgs e)
@@ -112,6 +113,7 @@ namespace Dama_v1
                 }
                 chessBoard.clearDostupnePole(); // Smazat dostupné pole
                 canvas.Refresh();
+                UkoncitHru(); // Ukončí hru jakmile to bude možné
             }
         }
 
@@ -150,6 +152,23 @@ namespace Dama_v1
                 canvas.Refresh();
             }
            
+        }
+
+        void UkoncitHru()
+        {
+            if (chessBoard.IsGameOver())
+            {
+                DialogResult dr = MessageBox.Show("Vyhrál hráč " + (_turnHrace == 1 ? 2 : 1), "Chcete novou hru?", MessageBoxButtons.YesNo);
+
+                if (dr == DialogResult.No)
+                {
+                    System.Windows.Forms.Application.Exit();
+                }
+                if (dr == DialogResult.Yes)
+                {
+                    Application.Restart();
+                }
+            }
         }
     }
 }
