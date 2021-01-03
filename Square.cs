@@ -9,6 +9,7 @@ namespace Dama_v1
 {
     class Square
     {
+        //C:\Users\david\source\repos\Dama_v1\Dama_v1
         public static int width = 60;
         private int _x;
         private int _y;

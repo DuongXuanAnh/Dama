@@ -114,7 +114,7 @@ namespace Dama_v1
             {
                 if (k.IsDama)
                 {
-                    DamaHandle(k);
+                    naplnitDiagonali(k);
                 }
                 else
                 {
@@ -134,7 +134,7 @@ namespace Dama_v1
             {
                 if (k.IsDama)
                 {
-                    DamaHandle(k);
+                    naplnitDiagonali(k);
                 }
                 else
                 {
@@ -386,18 +386,21 @@ namespace Dama_v1
 
             clearDostupnePole();
             ukazatDostupnePole(k, k.BelongToHrac);
-
-            foreach (Square sq in dostupePolicka)
+            if (k.IsDama && CanDamaJumpMore(k))
             {
-                if (k.IsDama && CanDamaJumpMore(k))
+                return true;
+            }
+            else
+            {
+                foreach (Square sq in dostupePolicka)
                 {
-                    return true;
-                }
-                else if (!k.IsDama && Math.Abs(squares[k.Index].Souradnice.Y - sq.Souradnice.Y) == 2)
-                {
-                    return true;
+                     if (!k.IsDama && Math.Abs(squares[k.Index].Souradnice.Y - sq.Souradnice.Y) == 2)
+                    {
+                        return true;
+                    }
                 }
             }
+           
             return false;
         }
 
@@ -456,7 +459,7 @@ namespace Dama_v1
             }
         }
 
-        void DamaHandle(Kaminek k) // Funkce urcuje jak se ma chovat dama
+        void naplnitDiagonali(Kaminek k) // Naplnit 4 směry(top-left/right, bot-left/right) do listu 
         {
             all_diagonals = new List<Square>();
             diagonal_botLeft = new List<Square>();
@@ -498,10 +501,15 @@ namespace Dama_v1
                 }
             }
 
+            OznacDostupnePoleProDamu(k);
+        }
+
+        void OznacDostupnePoleProDamu(Kaminek k) // Označit dostupné políčka podle každé diagonále
+        {
             for (int i = diagonal_topLeft.Count - 1; i >= 0; i--)
             {
-                
-                if(diagonal_topLeft[i].Kamen?.BelongToHrac == k.BelongToHrac)
+
+                if (diagonal_topLeft[i].Kamen?.BelongToHrac == k.BelongToHrac)
                 {
                     break;
                 }
@@ -548,8 +556,16 @@ namespace Dama_v1
             }
         }
 
+        // Skontroluje jestli Dama může ještě někam skočit po snězení nějakého kamínku
+        // Projede postupně 4 diagonály. Zkontroluje jestli za protiherním kamínkem je nějaké dostupné políčko. 
         bool CanDamaJumpMore(Kaminek k)
         {
+            Console.WriteLine(k.Index);
+            naplnitDiagonali(k);
+            foreach(Square s in diagonal_botLeft)
+            {
+                Console.WriteLine(s.Index);
+            }
             return false;
         }
 
