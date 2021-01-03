@@ -389,7 +389,11 @@ namespace Dama_v1
 
             foreach (Square sq in dostupePolicka)
             {
-                if (Math.Abs(squares[k.Index].Souradnice.Y - sq.Souradnice.Y) == 2)
+                if (k.IsDama && CanDamaJumpMore(k))
+                {
+                    return true;
+                }
+                else if (!k.IsDama && Math.Abs(squares[k.Index].Souradnice.Y - sq.Souradnice.Y) == 2)
                 {
                     return true;
                 }
@@ -542,6 +546,11 @@ namespace Dama_v1
                     oznacitDostupnePole(diagonal_botRight[i]);
                 }
             }
+        }
+
+        bool CanDamaJumpMore(Kaminek k)
+        {
+            return false;
         }
 
         public bool IsGameOver()

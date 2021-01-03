@@ -17,7 +17,7 @@ namespace Dama_v1
       
         Size size = new Size(Square.width *8, Square.width*8);
 
-        private int _turnHrace = 2;
+        private int _turnHrace = 1;
         Kaminek selected_kamen;
         int origin_x;
         int origin_y;
@@ -107,7 +107,18 @@ namespace Dama_v1
                     }
                     else if (chessBoard.umistitKamen(selected_kamen) == 3) // Zkontrolovat skok Damy
                     {
-                        _turnHrace = _turnHrace == 1 ? 2 : 1;
+                        if (chessBoard.Skoc_Dal(selected_kamen) == true)
+                        {
+                            chessBoard.DisableOtherKamen(selected_kamen);
+                            chessBoard.Skoc_Dal(selected_kamen);
+                            selected_kamen.MultiSkok = true;
+                        }
+                        else
+                        {
+                            chessBoard.EnableAllKaminek(selected_kamen);
+                            selected_kamen.MultiSkok = false;
+                            _turnHrace = _turnHrace == 1 ? 2 : 1;
+                        }
                     }
 
                 }
