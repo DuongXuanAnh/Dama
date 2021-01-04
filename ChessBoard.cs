@@ -386,11 +386,15 @@ namespace Dama_v1
 
             clearDostupnePole();
             ukazatDostupnePole(k, k.BelongToHrac);
-            if (k.IsDama && CanDamaJumpMore(k))
+            if (k.IsDama)
             {
-                return true;
+                if(k.MultiSkok && CanDamaJumpMore(k))
+                {
+                    return true;
+                }
+                return false;
             }
-            else
+            else if(!k.IsDama)
             {
                 foreach (Square sq in dostupePolicka)
                 {
@@ -560,13 +564,38 @@ namespace Dama_v1
         // Projede postupně 4 diagonály. Zkontroluje jestli za protiherním kamínkem je nějaké dostupné políčko. 
         bool CanDamaJumpMore(Kaminek k)
         {
-            Console.WriteLine(k.Index);
+            
             naplnitDiagonali(k);
-            foreach(Square s in diagonal_botLeft)
+            int count = 0;
+            for (int i = 0; i < diagonal_botLeft.Count; i++)
             {
-                Console.WriteLine(s.Index);
+
+                if (diagonal_botLeft[i].Kamen?.BelongToHrac != k.BelongToHrac)
+                {
+                    int j = i + 1;
+                    while (j < diagonal_botLeft.Count){
+                        if (diagonal_botLeft[j].Kamen == null)
+                        {
+                            count++;
+                            j++;
+                            Console.WriteLine(diagonal_botLeft[j].Index);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                   break;
+                }
             }
-            return false;
+            if(count > 0)
+            {
+                return true;
+            }
+            else
+            {
+               return false;
+            }
         }
 
         public bool IsGameOver()
