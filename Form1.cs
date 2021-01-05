@@ -108,7 +108,7 @@ namespace Dama_v1
                     else if (chessBoard.umistitKamen(selected_kamen) == 3) // Zkontrolovat skok Damy
                     {
                         if (chessBoard.CanDamaJumpMore(selected_kamen) == true)
-                        {                        
+                        {                      
                             chessBoard.DisableOtherKamen(selected_kamen);                         
                             chessBoard.CanDamaJumpMore(selected_kamen);
                         }

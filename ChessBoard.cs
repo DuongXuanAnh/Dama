@@ -13,10 +13,13 @@ namespace Dama_v1
         public Hrac hrac1 = new Hrac();
         public Hrac hrac2 = new Hrac();
         List<Square> dostupePolicka = new List<Square>();
+        
+        public int sumKaminky_before = 0;
+        public int sumKaminky_after = 0;
 
         //------------------------------------------------------
         //Pro Damu
-        List<Square> all_diagonals = new List<Square>(); // Vsechny policka ve 2 diagonale
+        List<Square> all_diagonals = new List<Square>(); // Vsechny policka ve dvou diagonalu
         List<Square> diagonal_topLeft = new List<Square>();
         List<Square> diagonal_topRight = new List<Square>();
         List<Square> diagonal_botRight = new List<Square>();
@@ -210,6 +213,7 @@ namespace Dama_v1
 
         public int umistitKamen(Kaminek k)
         {
+            sumKaminky_before = hrac1.kaminky.Count + hrac2.kaminky.Count;
             foreach (Square sq in dostupePolicka)
             {
                 if (sq.X < k.X + k.Velikost / 2
@@ -321,6 +325,7 @@ namespace Dama_v1
                     }
                 }
             }
+            sumKaminky_after = hrac1.kaminky.Count + hrac2.kaminky.Count;
         }
         void SebratKamen(int indexOrigin, int destinationIndex)
         {
@@ -386,7 +391,7 @@ namespace Dama_v1
 
             clearDostupnePole();
             ukazatDostupnePole(k, k.BelongToHrac);
-             if(!k.IsDama)
+            if(!k.IsDama)
             {
                 foreach (Square sq in dostupePolicka)
                 {
@@ -557,94 +562,179 @@ namespace Dama_v1
         public bool CanDamaJumpMore(Kaminek k)
         {
             naplnitDiagonali(k);
-            int protiHrac = k.BelongToHrac == 1 ? 2 : 1;
             int count = 0; // Pocita pocet dostupnych polich
-
             // Cac vong for ben duoi sau phai dc gop thanh ham
-            for (int i = 0; i < diagonal_botLeft.Count; i++)
+            if(k.BelongToHrac == 2)
             {
-                if (diagonal_botLeft[i].Kamen?.BelongToHrac == protiHrac)
+                for (int i = 0; i < diagonal_botLeft.Count; i++)
                 {
-                    int j = i + 1;
-                    while (j < diagonal_botLeft.Count)
+                    if (diagonal_botLeft[i].Kamen?.BelongToHrac == 1)
                     {
-                        if (diagonal_botLeft[j].Kamen == null)
+                        int j = i + 1;
+                        while (j < diagonal_botLeft.Count)
                         {
-                            count++;
-                            j++;
+                            if (diagonal_botLeft[j].Kamen == null)
+                            {
+                                count++;
+                                j++;
+                            }
+                            else
+                            {
+                                break;
+                            }
                         }
-                        else
-                        {
-                            break;
-                        }
+                        break;
                     }
-                    break;
+                }
+                for (int i = 0; i < diagonal_botRight.Count; i++)
+                {
+                    if (diagonal_botRight[i].Kamen?.BelongToHrac == 1)
+                    {
+                        int j = i + 1;
+                        while (j < diagonal_botRight.Count)
+                        {
+                            if (diagonal_botRight[j].Kamen == null)
+                            {
+                                count++;
+                                j++;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                for (int i = diagonal_topLeft.Count - 1; i > 0; i--)
+                {
+                    if (diagonal_topLeft[i].Kamen?.BelongToHrac == 1)
+                    {
+                        int j = i - 1;
+                        while (j > 0)
+                        {
+                            if (diagonal_topLeft[j].Kamen == null)
+                            {
+                                count++;
+                                j--;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                for (int i = diagonal_topRight.Count - 1; i > 0; i--)
+                {
+                    if (diagonal_topRight[i].Kamen?.BelongToHrac == 1)
+                    {
+                        int j = i - 1;
+                        while (j > 0)
+                        {
+                            if (diagonal_topRight[j].Kamen == null)
+                            {
+                                count++;
+                                j--;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }else if (k.BelongToHrac == 1)
+            {
+                for (int i = 0; i < diagonal_topLeft.Count; i++)
+                {
+                    if (diagonal_topLeft[i].Kamen?.BelongToHrac == 2)
+                    {
+                        int j = i + 1;
+                        while (j < diagonal_topLeft.Count)
+                        {
+                            if (diagonal_topLeft[j].Kamen == null)
+                            {
+                                count++;
+                                j++;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                for (int i = 0; i < diagonal_botLeft.Count; i++)
+                {
+                    if (diagonal_botLeft[i].Kamen?.BelongToHrac == 2)
+                    {
+                        int j = i + 1;
+                        while (j < diagonal_botLeft.Count)
+                        {
+                            if (diagonal_botLeft[j].Kamen == null)
+                            {
+                                count++;
+                                j++;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                for (int i = diagonal_topRight.Count - 1; i > 0; i--)
+                {
+                    if (diagonal_topRight[i].Kamen?.BelongToHrac == 1)
+                    {
+                        int j = i - 1;
+                        while (j > 0)
+                        {
+                            if (diagonal_topRight[j].Kamen == null)
+                            {
+                                count++;
+                                j--;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+
+                for (int i = diagonal_botRight.Count - 1; i > 0; i--)
+                {
+                    if (diagonal_botRight[i].Kamen?.BelongToHrac == 1)
+                    {
+                        int j = i - 1;
+                        while (j > 0)
+                        {
+                            if (diagonal_botRight[j].Kamen == null)
+                            {
+                                count++;
+                                j--;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        break;
+                    }
                 }
             }
-            for (int i = 0; i < diagonal_botRight.Count; i++)
-            {
-                if (diagonal_botRight[i].Kamen?.BelongToHrac == protiHrac)
-                {
-                    int j = i + 1;
-                    while (j < diagonal_botRight.Count)
-                    {
-                        if (diagonal_botRight[j].Kamen == null)
-                        {
-                            count++;
-                            j++;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
-            for (int i = diagonal_topLeft.Count - 1; i >= 0; i--)
-            {
-                Console.WriteLine(diagonal_topLeft[i].Index);
-                if (diagonal_topLeft[i].Kamen?.BelongToHrac == protiHrac)
-                {
-                    int j = i - 1;
-                    while (j > 0)
-                    {
-                        if (diagonal_topLeft[j].Kamen == null)
-                        {
-                            count++;
-                            j--;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
-            for (int i = diagonal_topRight.Count - 1; i >= 0; i--)
-            {
-                if (diagonal_topRight[i].Kamen?.BelongToHrac == protiHrac)
-                {
-                    int j = i - 1;
-                    while (j > 0)
-                    {
-                        if (diagonal_topRight[j].Kamen == null)
-                        {
-                            count++;
-                            j--;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
+            
             //---------------------------------------------------------------------------------------
             if (count > 0)
             {
+                //sumKaminky_before = sumKaminky_after;
                 return true;
             }
             else
