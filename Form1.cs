@@ -94,9 +94,9 @@ namespace Dama_v1
                     {
                         if (chessBoard.Skoc_Dal(selected_kamen) == true)
                         {
-                            chessBoard.DisableOtherKamen(selected_kamen);
-                            chessBoard.Skoc_Dal(selected_kamen);
                             selected_kamen.MultiSkok = true;
+                            chessBoard.DisableOtherKamen(selected_kamen);
+                            chessBoard.Skoc_Dal(selected_kamen);                 
                         }
                         else
                         {
@@ -107,16 +107,14 @@ namespace Dama_v1
                     }
                     else if (chessBoard.umistitKamen(selected_kamen) == 3) // Zkontrolovat skok Damy
                     {
-                        if (chessBoard.Skoc_Dal(selected_kamen) == true)
-                        {
-                            chessBoard.DisableOtherKamen(selected_kamen);
-                            chessBoard.Skoc_Dal(selected_kamen);
-                            selected_kamen.MultiSkok = true;
+                        if (chessBoard.CanDamaJumpMore(selected_kamen) == true)
+                        {                        
+                            chessBoard.DisableOtherKamen(selected_kamen);                         
+                            chessBoard.CanDamaJumpMore(selected_kamen);
                         }
                         else
                         {
                             chessBoard.EnableAllKaminek(selected_kamen);
-                            selected_kamen.MultiSkok = false;
                             _turnHrace = _turnHrace == 1 ? 2 : 1;
                         }
                     }

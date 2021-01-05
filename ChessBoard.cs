@@ -67,8 +67,8 @@ namespace Dama_v1
                 squares[32 - i - 1].Kamen = k2;
                 hrac2.kaminky.Add(k2);
             }
+            hrac1.kaminky[9].IsDama = true;
             hrac2.kaminky[9].IsDama = true;
-            //hrac2.kaminky[8].IsDama = true;
             //hrac2.kaminky[10].IsDama = true;
         }
 
@@ -380,21 +380,13 @@ namespace Dama_v1
             }       
         }
 
-        // Zkontroluje jestli nemuze skocit dal
+        // Zkontroluje jestli nemuze skocit dal (Pro normalni)
         public bool Skoc_Dal(Kaminek k)
         {
 
             clearDostupnePole();
             ukazatDostupnePole(k, k.BelongToHrac);
-            if (k.IsDama)
-            {
-                if(k.MultiSkok && CanDamaJumpMore(k))
-                {
-                    return true;
-                }
-                return false;
-            }
-            else if(!k.IsDama)
+             if(!k.IsDama)
             {
                 foreach (Square sq in dostupePolicka)
                 {
@@ -562,33 +554,96 @@ namespace Dama_v1
 
         // Skontroluje jestli Dama může ještě někam skočit po snězení nějakého kamínku
         // Projede postupně 4 diagonály. Zkontroluje jestli za protiherním kamínkem je nějaké dostupné políčko. 
-        bool CanDamaJumpMore(Kaminek k)
+        public bool CanDamaJumpMore(Kaminek k)
         {
-            
             naplnitDiagonali(k);
-            int count = 0;
+            int protiHrac = k.BelongToHrac == 1 ? 2 : 1;
+            int count = 0; // Pocita pocet dostupnych polich
+
+            // Cac vong for ben duoi sau phai dc gop thanh ham
             for (int i = 0; i < diagonal_botLeft.Count; i++)
             {
-
-                if (diagonal_botLeft[i].Kamen?.BelongToHrac != k.BelongToHrac)
+                if (diagonal_botLeft[i].Kamen?.BelongToHrac == protiHrac)
                 {
                     int j = i + 1;
-                    while (j < diagonal_botLeft.Count){
+                    while (j < diagonal_botLeft.Count)
+                    {
                         if (diagonal_botLeft[j].Kamen == null)
                         {
                             count++;
                             j++;
-                            Console.WriteLine(diagonal_botLeft[j].Index);
                         }
                         else
                         {
                             break;
                         }
                     }
-                   break;
+                    break;
                 }
             }
-            if(count > 0)
+            for (int i = 0; i < diagonal_botRight.Count; i++)
+            {
+                if (diagonal_botRight[i].Kamen?.BelongToHrac == protiHrac)
+                {
+                    int j = i + 1;
+                    while (j < diagonal_botRight.Count)
+                    {
+                        if (diagonal_botRight[j].Kamen == null)
+                        {
+                            count++;
+                            j++;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            for (int i = diagonal_topLeft.Count - 1; i >= 0; i--)
+            {
+                Console.WriteLine(diagonal_topLeft[i].Index);
+                if (diagonal_topLeft[i].Kamen?.BelongToHrac == protiHrac)
+                {
+                    int j = i - 1;
+                    while (j > 0)
+                    {
+                        if (diagonal_topLeft[j].Kamen == null)
+                        {
+                            count++;
+                            j--;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            for (int i = diagonal_topRight.Count - 1; i >= 0; i--)
+            {
+                if (diagonal_topRight[i].Kamen?.BelongToHrac == protiHrac)
+                {
+                    int j = i - 1;
+                    while (j > 0)
+                    {
+                        if (diagonal_topRight[j].Kamen == null)
+                        {
+                            count++;
+                            j--;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            //---------------------------------------------------------------------------------------
+            if (count > 0)
             {
                 return true;
             }
