@@ -79,6 +79,7 @@ namespace Dama_v1
            if(selected_kamen != null) // Kdyz mam spravne vybrany kaminek
             {
                 selected = false;
+                //int pocetKamenu = 
                 if (origin_x != 0 && origin_y != 0)
                 {
                     if (chessBoard.umistitKamen(selected_kamen) == 0) // Nedostupne policko

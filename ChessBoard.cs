@@ -14,8 +14,9 @@ namespace Dama_v1
         public Hrac hrac2 = new Hrac();
         List<Square> dostupePolicka = new List<Square>();
         
-        public int sumKaminky_before = 0;
+        public int sumKaminky_before = 24;
         public int sumKaminky_after = 0;
+ 
 
         //------------------------------------------------------
         //Pro Damu
@@ -213,7 +214,6 @@ namespace Dama_v1
 
         public int umistitKamen(Kaminek k)
         {
-            sumKaminky_before = hrac1.kaminky.Count + hrac2.kaminky.Count;
             foreach (Square sq in dostupePolicka)
             {
                 if (sq.X < k.X + k.Velikost / 2
@@ -326,6 +326,7 @@ namespace Dama_v1
                 }
             }
             sumKaminky_after = hrac1.kaminky.Count + hrac2.kaminky.Count;
+
         }
         void SebratKamen(int indexOrigin, int destinationIndex)
         {
@@ -732,15 +733,28 @@ namespace Dama_v1
             }
             
             //---------------------------------------------------------------------------------------
-            if (count > 0)
+            if (count > 0 && nejakyKaminekBylOdstranen())
             {
-                //sumKaminky_before = sumKaminky_after;
                 return true;
             }
             else
             {
                return false;
             }
+        }
+
+       public bool nejakyKaminekBylOdstranen()
+        {
+            Console.WriteLine("after: " + sumKaminky_after);
+            Console.WriteLine("before: " + sumKaminky_before);
+            if (sumKaminky_after < sumKaminky_before)
+            {
+                sumKaminky_before = sumKaminky_after;
+                return true;
+            }
+
+               return false;
+        
         }
 
         public bool IsGameOver()
